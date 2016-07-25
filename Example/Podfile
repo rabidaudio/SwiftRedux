@@ -1,0 +1,7 @@
+use_frameworks!
+target 'SwiftRedux_Tests' do
+  pod 'SwiftRedux', :path => '../'
+  
+  pod 'Quick', '~> 0.8'
+  pod 'Nimble', '~> 3.0'
+end
