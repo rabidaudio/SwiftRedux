@@ -1,0 +1,6 @@
+framework module Pods_SwiftRedux_Tests {
+  umbrella header "Pods-SwiftRedux_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
