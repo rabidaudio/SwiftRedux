@@ -53,7 +53,7 @@ let ExampleReducer: (prevState: ExampleState, action: ExampleAction) -> ExampleS
 }
 
 class GenericMiddleware<S,A> {
-    typealias T = Store<S,A>
+    typealias T = BaseStore<S,A>
     
     private(set) var lastStore: T?
     private(set) var createCallCount = 0
@@ -72,7 +72,7 @@ class GenericMiddleware<S,A> {
 }
 
 class NoOpMiddleware<S,A> {
-    typealias T = Store<S,A>
+    typealias T = BaseStore<S,A>
     
     func create(store: T) -> T.DispatchCreator {
         return { next -> T.Dispatcher in { next($0) } }

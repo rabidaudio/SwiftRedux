@@ -38,7 +38,7 @@ class TableOfContentsSpec: QuickSpec {
         describe("Store") {
             
             it("stores a value"){
-                let store = Store<ExampleState,ExampleAction>(
+                let store = BaseStore<ExampleState,ExampleAction>(
                     withState: ExampleState(x: 0, y: false),
                     middleware: [],
                     reducer: ExampleReducer
@@ -49,7 +49,7 @@ class TableOfContentsSpec: QuickSpec {
             }
             
             it("dispatches actions to reducers") {
-                let store = Store<ExampleState,ExampleAction>(
+                let store = BaseStore<ExampleState,ExampleAction>(
                     withState: ExampleState(x: 0, y: false),
                     middleware: [],
                     reducer: ExampleReducer
@@ -80,7 +80,7 @@ class TableOfContentsSpec: QuickSpec {
                 
                 let m = GenericMiddleware<ExampleState,ExampleAction>()
                 
-                let store = Store<ExampleState,ExampleAction>(
+                let store = BaseStore<ExampleState,ExampleAction>(
                     withState: ExampleState(x: 0, y: false),
                     middleware: [m.create],
                     reducer: ExampleReducer
