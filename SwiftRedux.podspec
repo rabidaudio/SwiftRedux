@@ -19,18 +19,8 @@ Pod::Spec.new do |s|
 
   s.description      = <<-DESC
 An implementation of [Redux](https://github.com/reactjs/redux) (the Flux-like state container)
-in Swift. Supports middleware, as well as combining reducers using `CombinedReducer(...).combine()`.
-Any object can be used for your State and Action objects. However, it is recommended to use structs
-and enums, respectively, for these objects. This allows you to not worry about accidentally mutating
-state (Swift passes struct by value rather than reference) and makes passing action data easy (using
-enum tuples).
-
-By default, it ships with a `BaseStore` object which can't be subscribed to by views. There are a few
-options included in this library:
-
-- [Observable-Swift](https://github.com/slazyk/Observable-Swift) - Simple property-observing library
-- [RxSwift](https://github.com/ReactiveX/RxSwift) - ReactiveX Observable Pattern implementation. Similar
-to rx-redux, it allows stores to act as an observer for Actions and an Observable for State
+in Swift. Supports middleware, combining reducers, and a few different stores for different
+subscription methods.
                        DESC
 
   s.homepage         = 'https://github.com/rabidaudio/SwiftRedux'
@@ -53,19 +43,16 @@ to rx-redux, it allows stores to act as an observer for Actions and an Observabl
   # s.dependency 'AFNetworking', '~> 2.3'
 
   s.subspec 'Observable-Swift' do |os|
-    os.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DREDUX_INCLUDE_OBSERVABLESWIFT' }
     os.source_files = 'SwiftRedux/Classes/ObservableSwift/**/*'
     os.dependency 'Observable-Swift', '~> 0.6.0'
   end
 
   s.subspec 'RxSwift' do |rx|
-    rx.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DREDUX_INCLUDE_RX' }
     rx.source_files = 'SwiftRedux/Classes/Rx/**/*'
     rx.dependency 'RxSwift', '~> 2.6'
   end
 
   s.subspec 'PromiseKit' do |promisekit|
-    promisekit.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DREDUX_INCLUDE_PROMISEKIT' }
     promisekit.source_files = 'SwiftRedux/Classes/PromiseKit/**/*'
     promisekit.dependency 'PromiseKit', '~> 3.3'
   end
