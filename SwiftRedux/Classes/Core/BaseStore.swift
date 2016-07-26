@@ -17,7 +17,7 @@ public class BaseStore<State,Action> {
     
     private let reducer: Reducer
     
-    public internal(set) var state: State
+    public var state: State
     
     public var middleware: [Middleware] = [] {
         didSet {

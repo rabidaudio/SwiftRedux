@@ -32,7 +32,7 @@ subscription methods.
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'SwiftRedux/Classes/*'
+  s.source_files = 'SwiftRedux/Classes/Core/*'
   
   # s.resource_bundles = {
   #   'SwiftRedux' => ['SwiftRedux/Assets/*.png']
@@ -43,17 +43,17 @@ subscription methods.
   # s.dependency 'AFNetworking', '~> 2.3'
 
   s.subspec 'Observable-Swift' do |os|
-    os.source_files = 'SwiftRedux/Classes/ObservableSwift/**/*'
+    os.source_files = 'SwiftRedux/Classes/{Core,ObservableSwift}/**/*'
     os.dependency 'Observable-Swift', '~> 0.6.0'
   end
 
   s.subspec 'RxSwift' do |rx|
-    rx.source_files = 'SwiftRedux/Classes/Rx/**/*'
+    rx.source_files = 'SwiftRedux/Classes/{Core,Rx}/**/*'
     rx.dependency 'RxSwift', '~> 2.6'
   end
 
   s.subspec 'PromiseKit' do |promisekit|
-    promisekit.source_files = 'SwiftRedux/Classes/PromiseKit/**/*'
+    promisekit.source_files = 'SwiftRedux/Classes/{Core,PromiseKit}/**/*'
     promisekit.dependency 'PromiseKit', '~> 3.3'
   end
 

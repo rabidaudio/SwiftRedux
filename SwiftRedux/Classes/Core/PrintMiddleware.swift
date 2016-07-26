@@ -9,7 +9,7 @@
 import Foundation
 
 // Example of how to use Middleware
-class PrintMiddleware<State,Action> {
+public class PrintMiddleware<State,Action> {
     static func create(store: BaseStore<State,Action>) -> BaseStore<State,Action>.DispatchCreator {
         return { next -> BaseStore<State,Action>.Dispatcher in
             return { action in

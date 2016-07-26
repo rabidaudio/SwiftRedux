@@ -21,6 +21,10 @@ to rx-redux, it allows stores to act as an observer for Actions and an Observabl
 
 You probably don't want all of these, so it is recommended to use one of the subspecs. See [Installation](#Installation).
 
+### Note
+
+While completely functional, this is still in beta and the API is subject to change. If you have suggestions or thoughts, I'd love to hear them.
+
 ## Example
 
 Start by defining your Actions, State, and transitions
@@ -133,10 +137,8 @@ class SomeMiddleware<S,A> {
         }
     }
 }
-// usage: middleware = [SomeMiddleware.create]
+// usage: middleware = [SomeMiddleware<MyState,MyAction>.create]
 ```
-
-## Requirements
 
 ## Installation
 
