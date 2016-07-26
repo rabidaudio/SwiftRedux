@@ -86,31 +86,120 @@ class TableOfContentsSpec: QuickSpec {
                 
                 let m = GenericMiddleware<ExampleState,ExampleAction>()
                 
-                let store = BaseStore<ExampleState,ExampleAction>(
+                let store = RXStore<ExampleState,ExampleAction>(
                     withState: testState,
-                    middleware: [m.create],
+                    middleware: [m.create(), m.create(),
+                        PrintMiddleware<ExampleState,ExampleAction>().create()
+                    ],
                     reducer: ExampleReducer
                 )
                 
-                expect(m.createCallCount) == 1
+                expect(m.createCallCount) == 2
                 expect(m.lastStore).to(beIdenticalTo(store))
-                expect(m.dispatchCreatorCallCount) == 1
+                expect(m.dispatchCreatorCallCount) == 2
                 
                 store.dispatch(.NoOp)
                 
                 store.dispatch(.ToggleY)
                 expect(store.state.y) == true
                 
-                expect(m.createCallCount) == 1
-                expect(m.dispatchCreatorCallCount) == 1
-                
-                store.middleware.append(NoOpMiddleware<ExampleState,ExampleAction>().create)
-                
                 expect(m.createCallCount) == 2
                 expect(m.dispatchCreatorCallCount) == 2
                 
+                store.middleware.append(NoOpMiddleware<ExampleState,ExampleAction>().create)
+                
+                expect(m.createCallCount) == 4
+                expect(m.dispatchCreatorCallCount) == 4
+                
                 store.dispatch(.ToggleY)
                 expect(store.state.y) == false
+            }
+        }
+        
+        describe("HistoryMiddleware") {
+            
+            it("should allow stepping through time"){
+                
+                let history = HistoryMiddleware<ExampleState,ExampleAction>(historyLimit: 100, futureLimit: 100) { action -> HistoryAction in
+                    switch action {
+                    case .Undo:
+                        return .Undo(1)
+                    case .Redo:
+                        return .Redo(1)
+                    default:
+                        return .NoOp
+                    }
+                }
+                
+                let store = RXStore<ExampleState,ExampleAction>(
+                    withState: testState,
+                    middleware: [history.create()],
+                    reducer: ExampleReducer
+                )
+                
+                expect(history.hasHistory).to(beFalse())
+                
+                let c = history.historyLimit
+                
+                for i in 0...c {
+                    store.dispatch(.SetX(newX: i))
+                }
+                
+                expect(store.state.x) == 100
+                expect(history.hasHistory).to(beTrue())
+                expect(history.hasFuture).to(beFalse())
+                expect(history.current).notTo(beNil())
+                
+                for _ in 0...c {
+                    store.dispatch(.Undo)
+                }
+                
+                expect(store.state.x) == 0
+                expect(history.hasHistory).to(beFalse())
+                expect(history.hasFuture).to(beTrue())
+                expect(history.current).notTo(beNil())
+                
+                for _ in 0...c {
+                    store.dispatch(.Redo)
+                }
+                
+                expect(store.state.x) == 100
+                expect(history.hasHistory).to(beTrue())
+                expect(history.hasFuture).to(beFalse())
+                expect(history.current).notTo(beNil())
+            }
+            
+            it("should no-op without history") {
+                let history = HistoryMiddleware<ExampleState,ExampleAction>(historyLimit: 0) { action -> HistoryAction in
+                    switch action {
+                    case .Undo:
+                        return .Undo(1)
+                    case .Redo:
+                        return .Redo(1)
+                    default:
+                        return .NoOp
+                    }
+                }
+                
+                let store = RXStore<ExampleState,ExampleAction>(
+                    withState: testState,
+                    middleware: [history.create()],
+                    reducer: ExampleReducer
+                )
+                
+                expect(history.hasHistory).to(beFalse())
+                
+                for i in 0..<10 {
+                    store.dispatch(.SetX(newX: i))
+                    expect(history.hasHistory).to(beFalse())
+                    expect(history.current).notTo(beNil())
+                }
+                
+                for _ in 0..<20 {
+                    store.dispatch(.Undo)
+                    expect(history.hasHistory).to(beFalse())
+                    expect(history.current).notTo(beNil())
+                }
             }
         }
         

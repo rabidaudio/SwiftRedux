@@ -49,6 +49,6 @@ public class BaseStore<State,Action> {
     
     // build up middleware and call
     public func dispatch(action: Action) {
-        baseDispatch(action)
+        baseDispatcher(action)
     }
 }

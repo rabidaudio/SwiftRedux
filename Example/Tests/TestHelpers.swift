@@ -29,12 +29,15 @@ enum MyErrorType: ErrorType {
     case ExampleError(message: String)
 }
 
-enum ExampleAction {
+enum ExampleAction: Equatable {
     case NoOp
     case ToggleY
     case SetX(newX: Int)
     
     case ErrorAction(error: ErrorType)
+    
+    case Undo
+    case Redo
 }
 
 func ==(lhs: ExampleAction, rhs: ExampleAction) -> Bool {
@@ -47,6 +50,10 @@ func ==(lhs: ExampleAction, rhs: ExampleAction) -> Bool {
         return rhs == .SetX(newX: newX)
     case .ErrorAction(let error):
         return rhs == .ErrorAction(error: error)
+    case .Undo:
+        return rhs == .Undo
+    case .Redo:
+        return rhs == .Redo
     }
 }
 
@@ -77,13 +84,15 @@ class GenericMiddleware<S,A> {
     private(set) var createCallCount = 0
     private(set) var dispatchCreatorCallCount = 0
     
-    func create(store: T) -> T.DispatchCreator {
-        self.lastStore = store
-        createCallCount += 1
-        return { next in
-            self.dispatchCreatorCallCount += 1
-            return { a in
-                next(a)
+    func create() -> (store: T) -> T.DispatchCreator {
+        return { store in
+            self.lastStore = store
+            self.createCallCount += 1
+            return { next in
+                self.dispatchCreatorCallCount += 1
+                return { a in
+                    next(a)
+                }
             }
         }
     }

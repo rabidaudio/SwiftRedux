@@ -25,6 +25,7 @@
 		0B9EA5901D472D3900F95D37 /* BaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA58D1D472D3900F95D37 /* BaseStore.swift */; };
 		0B9EA5911D472D3900F95D37 /* CombinedReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA58E1D472D3900F95D37 /* CombinedReducer.swift */; };
 		0B9EA5921D472D3900F95D37 /* PrintMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA58F1D472D3900F95D37 /* PrintMiddleware.swift */; };
+		0B9EA5981D47728900F95D37 /* HistoryMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA5971D47728900F95D37 /* HistoryMiddleware.swift */; };
 		0BA57A23CF96231BC8CA95C5D799B842 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA44D5A48A2DF38E79BA1A2B12F3435 /* World.swift */; };
 		0D42AD0EE0652A82EFA1CDC61930E322 /* ShareReplay1.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F14A9BD7A22F4A9FBD5C88BA3FC1CB /* ShareReplay1.swift */; };
 		0EE4141C7928C6C0AC7F236397D05FB9 /* ImmediateScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D838A141BF5F12CF18DA002000355C3 /* ImmediateScheduler.swift */; };
@@ -418,6 +419,7 @@
 		0B9EA58D1D472D3900F95D37 /* BaseStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseStore.swift; path = Core/BaseStore.swift; sourceTree = "<group>"; };
 		0B9EA58E1D472D3900F95D37 /* CombinedReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CombinedReducer.swift; path = Core/CombinedReducer.swift; sourceTree = "<group>"; };
 		0B9EA58F1D472D3900F95D37 /* PrintMiddleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PrintMiddleware.swift; path = Core/PrintMiddleware.swift; sourceTree = "<group>"; };
+		0B9EA5971D47728900F95D37 /* HistoryMiddleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryMiddleware.swift; path = Core/HistoryMiddleware.swift; sourceTree = "<group>"; };
 		0CF1BB5D7F7E3BD92DBD95CEA758A7B0 /* ConcurrentMainScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConcurrentMainScheduler.swift; path = RxSwift/Schedulers/ConcurrentMainScheduler.swift; sourceTree = "<group>"; };
 		0D9C73208FEED7932C452D0202ABDA96 /* QuickConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QuickConfiguration.m; path = Sources/Quick/Configuration/QuickConfiguration.m; sourceTree = "<group>"; };
 		0E213D187E62FF3AB261E05DBE6818E2 /* ElementAt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ElementAt.swift; path = RxSwift/Observables/Implementations/ElementAt.swift; sourceTree = "<group>"; };
@@ -865,6 +867,7 @@
 				0B9EA58D1D472D3900F95D37 /* BaseStore.swift */,
 				0B9EA58E1D472D3900F95D37 /* CombinedReducer.swift */,
 				0B9EA58F1D472D3900F95D37 /* PrintMiddleware.swift */,
+				0B9EA5971D47728900F95D37 /* HistoryMiddleware.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -2066,6 +2069,7 @@
 			files = (
 				0B9EA5841D46FE7400F95D37 /* Store+ObservableSwift.swift in Sources */,
 				0B9EA5921D472D3900F95D37 /* PrintMiddleware.swift in Sources */,
+				0B9EA5981D47728900F95D37 /* HistoryMiddleware.swift in Sources */,
 				0B9EA5911D472D3900F95D37 /* CombinedReducer.swift in Sources */,
 				0B9EA5851D46FE7400F95D37 /* Store+PromiseKit.swift in Sources */,
 				0B9EA5901D472D3900F95D37 /* BaseStore.swift in Sources */,

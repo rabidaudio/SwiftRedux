@@ -9,13 +9,23 @@
 import Foundation
 
 // Example of how to use Middleware
-public class PrintMiddleware<State,Action> {
-    static func create(store: BaseStore<State,Action>) -> BaseStore<State,Action>.DispatchCreator {
-        return { next -> BaseStore<State,Action>.Dispatcher in
-            return { action in
-                print("willDispatch \(action) -> \(store.state)")
-                next(action)
-                print("didDispatch \(action) -> \(store.state)")
+public class PrintMiddleware<S,A> {
+    public typealias T = BaseStore<S,A>
+    
+    let printMethod: (String -> Void)
+    
+    public init(printMethod: (String->Void) = { print($0) }){
+        self.printMethod = printMethod
+    }
+    
+    public func create() -> (store: T) -> T.DispatchCreator {
+        return { store in
+            return { next in
+                return { action in
+                    self.printMethod("willDispatch \(action) -> \(store.state)")
+                    next(action)
+                    self.printMethod("didDispatch \(action) -> \(store.state)")
+                }
             }
         }
     }
