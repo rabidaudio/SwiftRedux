@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 // Store which observes actions and whose state is observable
-public class RXStore<State,Action>: BaseStore<State,Action>, ObservableType {
+public class RxStore<State,Action>: BaseStore<State,Action>, ObservableType {
     public typealias E = State
     
     private let _state: Variable<State>
@@ -60,4 +60,28 @@ public class RXStore<State,Action>: BaseStore<State,Action>, ObservableType {
     public func subscribe<O : ObserverType where O.E == E>(observer: O) -> Disposable {
         return asObservable().subscribe(observer)
     }
+}
+
+
+public class RxHistoryMiddleware<S:Duplicable,A>: HistoryMiddleware<S,A> {
+    
+    public let historySize: Variable<Int>
+    public let futureSize: Variable<Int>
+    
+    public let canUndo: Observable<Bool>
+    public let canRedo: Observable<Bool>
+    
+    override public init(historyLimit: Int = 1, futureLimit: Int = 0, actionMapper: (A -> HistoryAction)) {
+        historySize = Variable(0)
+        futureSize = Variable(0)
+        canUndo = historySize.asObservable().map { $0 > 0 }
+        canRedo = futureSize.asObservable().map { $0 > 0 }
+        super.init(historyLimit: historyLimit, futureLimit: futureLimit, actionMapper: actionMapper)
+    }
+    
+    override func onChange() {
+        historySize.value = history.count
+        futureSize.value = future.count
+    }
+    
 }

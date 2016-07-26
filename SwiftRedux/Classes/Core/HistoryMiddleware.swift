@@ -10,13 +10,18 @@ import Foundation
 
 public enum HistoryAction {
     case NoOp
+    case Append
     case Undo(Int)
     case Redo(Int)
     case ClearHistory
     case ClearFuture
 }
 
-public class HistoryMiddleware<S,A> {
+public protocol Duplicable {
+    func duplicate() -> Self
+}
+
+public class HistoryMiddleware<S:Duplicable,A> {
     public typealias T = BaseStore<S,A>
     
     public let historyLimit: Int
@@ -43,7 +48,7 @@ public class HistoryMiddleware<S,A> {
     
     func undo(){
         if let newState = history.popLast() {
-            if let current = current {
+            if let current = current?.duplicate() {
                 future.append(current)
                 while future.count > futureLimit {
                     future.removeFirst()
@@ -55,7 +60,7 @@ public class HistoryMiddleware<S,A> {
     
     func redo(){
         if let newState = future.popLast() {
-            if let current = current {
+            if let current = current?.duplicate() {
                 history.append(current)
                 while history.count > historyLimit {
                     history.removeFirst()
@@ -67,13 +72,17 @@ public class HistoryMiddleware<S,A> {
     
     func add(item: S){
         future.removeAll()
-        if let current = current {
+        if let current = current?.duplicate() {
             history.append(current)
             while history.count > historyLimit {
                 history.removeFirst()
             }
         }
         current = item
+    }
+    
+    func onChange() {
+        
     }
     
     public func create() -> (store: T) -> T.DispatchCreator {
@@ -86,7 +95,10 @@ public class HistoryMiddleware<S,A> {
                     switch self.actionMapper(action) {
                     case .NoOp:
                         next(action)
-                        self.add(store.state)
+                        return
+                    case .Append:
+                        next(action)
+                        self.add(store.state.duplicate())
                     case .Undo(let count):
                         count.times { self.undo() }
                         if let state = self.current {
@@ -102,6 +114,7 @@ public class HistoryMiddleware<S,A> {
                     case .ClearFuture:
                         self.history.removeAll()
                     }
+                    self.onChange()
                 }
             }
         }

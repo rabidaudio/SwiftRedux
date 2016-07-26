@@ -106,7 +106,7 @@ class NoOpMiddleware<S,A> {
     }
 }
 
-class RxStoreWithErrorHandler: RXStore<ExampleState,ExampleAction> {
+class RxStoreWithErrorHandler: RxStore<ExampleState,ExampleAction> {
     
     init(withState initialState: ExampleState, reducer: (prevState: ExampleState, action: ExampleAction) -> ExampleState) {
         super.init(withState: initialState, middleware: [], reducer: reducer)

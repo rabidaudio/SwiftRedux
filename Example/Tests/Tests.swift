@@ -86,7 +86,7 @@ class TableOfContentsSpec: QuickSpec {
                 
                 let m = GenericMiddleware<ExampleState,ExampleAction>()
                 
-                let store = RXStore<ExampleState,ExampleAction>(
+                let store = RxStore<ExampleState,ExampleAction>(
                     withState: testState,
                     middleware: [m.create(), m.create(),
                         PrintMiddleware<ExampleState,ExampleAction>().create()
@@ -131,7 +131,7 @@ class TableOfContentsSpec: QuickSpec {
                     }
                 }
                 
-                let store = RXStore<ExampleState,ExampleAction>(
+                let store = RxStore<ExampleState,ExampleAction>(
                     withState: testState,
                     middleware: [history.create()],
                     reducer: ExampleReducer
@@ -181,7 +181,7 @@ class TableOfContentsSpec: QuickSpec {
                     }
                 }
                 
-                let store = RXStore<ExampleState,ExampleAction>(
+                let store = RxStore<ExampleState,ExampleAction>(
                     withState: testState,
                     middleware: [history.create()],
                     reducer: ExampleReducer
@@ -239,7 +239,7 @@ class TableOfContentsSpec: QuickSpec {
             
             it("should be observable") {
                 
-                let store = RXStore<ExampleState,ExampleAction>(withState: testState,
+                let store = RxStore<ExampleState,ExampleAction>(withState: testState,
                                                               middleware: [],
                                                               reducer: ExampleReducer
                 )
@@ -272,7 +272,7 @@ class TableOfContentsSpec: QuickSpec {
                     ExampleAction.SetX(newX: 5)
                 ].toObservable()
                 
-                let store = RXStore<ExampleState,ExampleAction>(withState: testState,
+                let store = RxStore<ExampleState,ExampleAction>(withState: testState,
                                                                 middleware: [],
                                                                 reducer: ExampleReducer
                 )
@@ -305,7 +305,7 @@ class TableOfContentsSpec: QuickSpec {
                     return NopDisposable.instance
                 }
                 
-                let store = RXStore<ExampleState,ExampleAction>(withState: testState,
+                let store = RxStore<ExampleState,ExampleAction>(withState: testState,
                                                                 middleware: [],
                                                                 reducer: ExampleReducer
                 )
