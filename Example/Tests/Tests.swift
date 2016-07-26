@@ -127,7 +127,7 @@ class TableOfContentsSpec: QuickSpec {
                     case .Redo:
                         return .Redo(1)
                     default:
-                        return .NoOp
+                        return .Append
                     }
                 }
                 
@@ -177,7 +177,7 @@ class TableOfContentsSpec: QuickSpec {
                     case .Redo:
                         return .Redo(1)
                     default:
-                        return .NoOp
+                        return .Append
                     }
                 }
                 

@@ -19,10 +19,14 @@ class CallCounterReducer<S,A> {
     }    
 }
 
-struct ExampleState {
+struct ExampleState: Duplicable {
     var x: Int
     var y: Bool
     var errorMessage: String?
+    
+    func duplicate() -> ExampleState {
+        return ExampleState(x: x, y: y, errorMessage: errorMessage)
+    }
 }
 
 enum MyErrorType: ErrorType {
