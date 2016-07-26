@@ -3,10 +3,14 @@
 import Quick
 import Nimble
 import SwiftRedux
+import RxSwift
+import PromiseKit
 
 class TableOfContentsSpec: QuickSpec {
     
     override func spec() {
+        
+        let testState = ExampleState(x: 0, y: false, errorMessage: nil)
         
         describe("CombinedReduder") {
             
@@ -19,15 +23,17 @@ class TableOfContentsSpec: QuickSpec {
                     callReducer.reduce
                 ).combine()
                 
-                let _ = combined(prevState: ExampleState(x: 0, y: true), action: .NoOp)
+                let newState = combined(prevState: testState, action: .NoOp)
                 
+                expect(newState.x) == 0
+                expect(newState.y).to(beFalse())
                 expect(callReducer.callCount) == 3
             }
             
             it("passes through an empty set of reducers") {
                 let reducer = CombinedReducer<ExampleState,ExampleAction>().combine()
                 
-                let initialState = ExampleState(x: 0, y: true)
+                let initialState = testState
                 let newState = reducer(prevState: initialState, action: .NoOp)
                 
                 expect(newState.x) == initialState.x
@@ -39,7 +45,7 @@ class TableOfContentsSpec: QuickSpec {
             
             it("stores a value"){
                 let store = BaseStore<ExampleState,ExampleAction>(
-                    withState: ExampleState(x: 0, y: false),
+                    withState: testState,
                     middleware: [],
                     reducer: ExampleReducer
                 )
@@ -50,7 +56,7 @@ class TableOfContentsSpec: QuickSpec {
             
             it("dispatches actions to reducers") {
                 let store = BaseStore<ExampleState,ExampleAction>(
-                    withState: ExampleState(x: 0, y: false),
+                    withState: testState,
                     middleware: [],
                     reducer: ExampleReducer
                 )
@@ -81,7 +87,7 @@ class TableOfContentsSpec: QuickSpec {
                 let m = GenericMiddleware<ExampleState,ExampleAction>()
                 
                 let store = BaseStore<ExampleState,ExampleAction>(
-                    withState: ExampleState(x: 0, y: false),
+                    withState: testState,
                     middleware: [m.create],
                     reducer: ExampleReducer
                 )
@@ -105,6 +111,220 @@ class TableOfContentsSpec: QuickSpec {
                 
                 store.dispatch(.ToggleY)
                 expect(store.state.y) == false
+            }
+        }
+        
+        describe("ObservableStore") {
+            
+            
+            it("should be observable") {
+                
+                let store = Store<ExampleState,ExampleAction>(withState: testState,
+                    middleware: [],
+                    reducer: ExampleReducer
+                )
+                
+                var callCount = 0
+                
+                let dispose = store.subscribe { state in
+                    callCount += 1
+                    expect(state.x) == store.state.x
+                    expect(state.y) == store.state.y
+                }
+                
+                store.dispatch(.NoOp)
+                store.dispatch(.ToggleY)
+                store.dispatch(.SetX(newX: 5))
+                
+                expect(callCount) == 3
+                expect(store.state.x) == 5
+                expect(store.state.y).to(beTrue())
+                
+                dispose.invalidate()
+                
+                expect(dispose.valid()).to(beFalse())
+            }
+        }
+        
+        describe("RxStore"){
+            
+            it("should be observable") {
+                
+                let store = RXStore<ExampleState,ExampleAction>(withState: testState,
+                                                              middleware: [],
+                                                              reducer: ExampleReducer
+                )
+                
+                var callCount = 0
+                
+                let disposable = store.subscribeNext { state in
+                    callCount += 1
+                    expect(state.x) == store.state.x
+                    expect(state.y) == store.state.y
+                }
+                
+                store.dispatch(.NoOp)
+                store.dispatch(.ToggleY)
+                store.dispatch(.SetX(newX: 5))
+                
+                expect(callCount) == 4
+                
+                expect(store.state.x) == 5
+                expect(store.state.y).to(beTrue())
+                
+                disposable.dispose()
+            }
+            
+            it("should observe action streams") {
+                
+                let actions = [
+                    ExampleAction.NoOp,
+                    ExampleAction.ToggleY,
+                    ExampleAction.SetX(newX: 5)
+                ].toObservable()
+                
+                let store = RXStore<ExampleState,ExampleAction>(withState: testState,
+                                                                middleware: [],
+                                                                reducer: ExampleReducer
+                )
+                
+                let disposeBag = DisposeBag()
+                
+                var callCount = 0
+                
+                store.subscribeNext { state in
+                    callCount += 1
+                    expect(state.x) == store.state.x
+                    expect(state.y) == store.state.y
+                }.addDisposableTo(disposeBag)
+                
+                
+                actions.subscribe(store.rx_dispatcher).addDisposableTo(disposeBag)
+                
+                expect(callCount).toEventually(equal(4))
+                expect(store.state.x).toEventually(equal(5))
+                expect(store.state.y).toEventually(beTrue())
+            }
+            
+            it("should allow async actions") {
+                let futureAction = Observable<ExampleAction>.create { subscriber -> Disposable in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        NSThread.sleepForTimeInterval(0.2)
+                        subscriber.onNext(.ToggleY)
+                        subscriber.onCompleted()
+                    }
+                    return NopDisposable.instance
+                }
+                
+                let store = RXStore<ExampleState,ExampleAction>(withState: testState,
+                                                                middleware: [],
+                                                                reducer: ExampleReducer
+                )
+                
+                let disposeBag = DisposeBag()
+                
+                var callCount = 0
+                
+                store.subscribeNext { state in
+                    callCount += 1
+                    expect(state.x) == store.state.x
+                    expect(state.y) == store.state.y
+                }.addDisposableTo(disposeBag)
+                
+                
+                futureAction.subscribe(store.rx_dispatcher).addDisposableTo(disposeBag)
+                
+                expect(callCount).toEventually(equal(2))
+                expect(store.state.y).toEventually(beTrue())
+            }
+            
+            it("should allow for custom error actions") {
+                let futureAction = Observable<ExampleAction>.create { subscriber -> Disposable in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        NSThread.sleepForTimeInterval(0.2)
+                        subscriber.onError(MyErrorType.ExampleError(message: "some error"))
+                    }
+                    return NopDisposable.instance
+                }
+                
+                let store = RxStoreWithErrorHandler(
+                    withState: testState,
+                    reducer: ExampleReducer
+                )
+                
+                let disposeBag = DisposeBag()
+                
+                var callCount = 0
+                
+                store.subscribeNext { state in callCount += 1 }.addDisposableTo(disposeBag)
+                
+                
+                futureAction.subscribe(store.rx_dispatcher).addDisposableTo(disposeBag)
+                
+                expect(callCount).toEventually(equal(2))
+                expect(store.state.errorMessage).toEventually(equal("some error"))
+            }
+        }
+        
+        describe("PKStore") {
+            
+            it("should promise future values") {
+                
+                let store = PKStore<ExampleState,ExampleAction>(withState: testState,
+                                                                middleware: [],
+                                                                reducer: ExampleReducer
+                )
+                
+                var callCount = 0
+                
+                let block = { (state: ExampleState) -> Void in
+                    callCount += 1
+//                    expect(state.x) == 0
+//                    expect(state.y) == false
+                }
+                
+                store.promiseNextChange().then { block($0) }
+                store.promiseNextChange().then { block($0) }
+                
+                store.dispatch(.NoOp)
+                
+                expect(callCount).toEventually(equal(2))
+                
+                store.promiseNextChange().then { (state: ExampleState) -> Void in
+                    callCount += 1
+//                    expect(state.x) == 0
+//                    expect(state.y) == true
+                }
+                
+                store.dispatch(.ToggleY)
+                store.dispatch(.SetX(newX: 5))
+                
+                expect(callCount).toEventually(equal(3))
+                expect(callCount).toNotEventually(beGreaterThan(3))
+            }
+            
+            it("should allow for promised actions") {
+                let store = PKStore<ExampleState,ExampleAction>(withState: testState,
+                                                                middleware: [],
+                                                                reducer: ExampleReducer
+                )
+                
+                store.dispatchAsync(Promise().thenInBackground {
+                    return Promise(ExampleAction.ToggleY)
+                })
+                
+                expect(store.state.y).toEventually(beTrue())
+            }
+            
+            it("should allow for custom error actions") {
+                let store = PKStoreWithErrorHandler(withState: testState, reducer: ExampleReducer)
+                
+                store.dispatchAsync(Promise().thenInBackground {
+                    return Promise(error: MyErrorType.ExampleError(message: "another error"))
+                })
+                
+                expect(store.state.errorMessage).toNotEventually(beNil())
+                expect(store.state.errorMessage!).toEventually(equal("another error"))
             }
         }
     }

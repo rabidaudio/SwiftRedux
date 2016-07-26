@@ -7,25 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B9EA5241D46BF5600F95D37 /* BaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA5231D46BF5600F95D37 /* BaseStore.swift */; };
-		0B9EA5261D46BFA000F95D37 /* CombinedReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA5251D46BFA000F95D37 /* CombinedReducer.swift */; };
-		0B9EA5281D46C02D00F95D37 /* PrintMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA5271D46C02D00F95D37 /* PrintMiddleware.swift */; };
 		0B9EA52A1D46C20600F95D37 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA5291D46C20600F95D37 /* TestHelpers.swift */; };
-		0B9EA52D1D46D18300F95D37 /* Store+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA52C1D46D18300F95D37 /* Store+Rx.swift */; };
-		0B9EA5301D46D94600F95D37 /* Store+PromiseKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA52F1D46D94600F95D37 /* Store+PromiseKit.swift */; };
-		0B9EA5351D46F0B300F95D37 /* Store+ObservableSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EA5341D46F0B300F95D37 /* Store+ObservableSwift.swift */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		F44765B631133DC5286B1173 /* Pods_SwiftRedux_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FC70AE8488AA7D752A52B9 /* Pods_SwiftRedux_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0B9EA5231D46BF5600F95D37 /* BaseStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseStore.swift; sourceTree = "<group>"; };
-		0B9EA5251D46BFA000F95D37 /* CombinedReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinedReducer.swift; sourceTree = "<group>"; };
-		0B9EA5271D46C02D00F95D37 /* PrintMiddleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintMiddleware.swift; sourceTree = "<group>"; };
 		0B9EA5291D46C20600F95D37 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
-		0B9EA52C1D46D18300F95D37 /* Store+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Store+Rx.swift"; sourceTree = "<group>"; };
-		0B9EA52F1D46D94600F95D37 /* Store+PromiseKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Store+PromiseKit.swift"; sourceTree = "<group>"; };
-		0B9EA5341D46F0B300F95D37 /* Store+ObservableSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Store+ObservableSwift.swift"; sourceTree = "<group>"; };
 		28FC70AE8488AA7D752A52B9 /* Pods_SwiftRedux_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftRedux_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3825E91E77F567BD48D2C0A0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		3DAA074D685926DF194D4A4E /* Pods-SwiftRedux_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRedux_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRedux_Tests/Pods-SwiftRedux_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -61,12 +49,6 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				0B9EA5231D46BF5600F95D37 /* BaseStore.swift */,
-				0B9EA52F1D46D94600F95D37 /* Store+PromiseKit.swift */,
-				0B9EA52C1D46D18300F95D37 /* Store+Rx.swift */,
-				0B9EA5341D46F0B300F95D37 /* Store+ObservableSwift.swift */,
-				0B9EA5251D46BFA000F95D37 /* CombinedReducer.swift */,
-				0B9EA5271D46C02D00F95D37 /* PrintMiddleware.swift */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
@@ -105,8 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				D97F5C87489785EB2403A9E0 /* SwiftRedux.podspec */,
-				A14CEF969BBFB5EACF1439B8 /* README.md */,
 				3825E91E77F567BD48D2C0A0 /* LICENSE */,
+				A14CEF969BBFB5EACF1439B8 /* README.md */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
@@ -239,14 +221,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B9EA5301D46D94600F95D37 /* Store+PromiseKit.swift in Sources */,
-				0B9EA5351D46F0B300F95D37 /* Store+ObservableSwift.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
-				0B9EA52D1D46D18300F95D37 /* Store+Rx.swift in Sources */,
 				0B9EA52A1D46C20600F95D37 /* TestHelpers.swift in Sources */,
-				0B9EA5261D46BFA000F95D37 /* CombinedReducer.swift in Sources */,
-				0B9EA5241D46BF5600F95D37 /* BaseStore.swift in Sources */,
-				0B9EA5281D46C02D00F95D37 /* PrintMiddleware.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

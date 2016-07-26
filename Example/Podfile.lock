@@ -1,7 +1,37 @@
 PODS:
   - Nimble (3.2.0)
+  - Observable-Swift (0.6.0)
+  - OMGHTTPURLRQ (3.2.0):
+    - OMGHTTPURLRQ/RQ (= 3.2.0)
+  - OMGHTTPURLRQ/FormURLEncode (3.2.0)
+  - OMGHTTPURLRQ/RQ (3.2.0):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (3.2.0)
+  - PromiseKit (3.3.0):
+    - PromiseKit/Foundation (= 3.3.0)
+    - PromiseKit/QuartzCore (= 3.3.0)
+    - PromiseKit/UIKit (= 3.3.0)
+  - PromiseKit/CorePromise (3.3.0)
+  - PromiseKit/Foundation (3.3.0):
+    - OMGHTTPURLRQ (~> 3.2.0)
+    - PromiseKit/CorePromise
+  - PromiseKit/QuartzCore (3.3.0):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (3.3.0):
+    - PromiseKit/CorePromise
   - Quick (0.9.2)
-  - SwiftRedux (0.1.0)
+  - RxSwift (2.6.0)
+  - SwiftRedux (0.1.0):
+    - SwiftRedux/Observable-Swift (= 0.1.0)
+    - SwiftRedux/PromiseKit (= 0.1.0)
+    - SwiftRedux/RxSwift (= 0.1.0)
+  - SwiftRedux/Observable-Swift (0.1.0):
+    - Observable-Swift (~> 0.6.0)
+  - SwiftRedux/PromiseKit (0.1.0):
+    - PromiseKit (~> 3.3)
+  - SwiftRedux/RxSwift (0.1.0):
+    - RxSwift (~> 2.6)
 
 DEPENDENCIES:
   - Nimble (~> 3.0)
@@ -14,8 +44,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  Observable-Swift: c63b9fc990703b135450cb5bd3541022384867ae
+  OMGHTTPURLRQ: 1e54807cb7d5dbb506926e53498e1e9ac5720c79
+  PromiseKit: 3af62d9226430bdf0b3321e4de899e539d9c178f
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
-  SwiftRedux: 7f7a1c9e450125a290050dc77cbb71e5e2d6d161
+  RxSwift: 77f3a0b15324baa7a1c9bfa9f199648a82424e26
+  SwiftRedux: 077db8b56305edd27f68ae7ff7be4a0e56b15ede
 
 PODFILE CHECKSUM: 1d599b41bdf4e12842d1abdbdc323fec8d0db715
 

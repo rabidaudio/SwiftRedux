@@ -6,18 +6,20 @@
 //  Copyright © 2016 Charles Julian Knight. All rights reserved.
 //
 
-#if REDUX_INCLUDE_PROMISEKIT
-
 import Foundation
 import PromiseKit
 
-class Store<State,Action>: BaseStore<State,Action> {
+public class PKStore<State,Action>: BaseStore<State,Action> {
     
     private var subscribers: [(Promise<State>, (State->Void),(ErrorType->Void))] = []
     
     private let lock = NSLock()
     
-    override var state: State {
+    public override init(withState initialState: State, middleware: [Middleware], reducer: Reducer) {
+        super.init(withState: initialState, middleware: middleware, reducer: reducer)
+    }
+    
+    override public var state: State {
         didSet {
             lock.lock()
             while !subscribers.isEmpty {
@@ -53,5 +55,3 @@ class Store<State,Action>: BaseStore<State,Action> {
         return pp.promise
     }
 }
-    
-#endif

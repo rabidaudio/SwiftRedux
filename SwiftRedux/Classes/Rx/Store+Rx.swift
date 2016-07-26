@@ -6,18 +6,16 @@
 //  Copyright © 2016 Charles Julian Knight. All rights reserved.
 //
 
-#if REDUX_INCLUDE_RX
-
 import Foundation
 import RxSwift
 
 // Store which observes actions and whose state is observable
-public class Store<State,Action>: Store<State,Action>, ObservableType {
-    typealias E = State
+public class RXStore<State,Action>: BaseStore<State,Action>, ObservableType {
+    public typealias E = State
     
     private let _state: Variable<State>
     
-    lazy private(set) var rx_dispatcher: AnyObserver<Action> = {
+    lazy public private(set) var rx_dispatcher: AnyObserver<Action> = {
         return AnyObserver { event in
             switch event {
             case .Next(let action):
@@ -35,18 +33,18 @@ public class Store<State,Action>: Store<State,Action>, ObservableType {
         }
     }()
     
-    override var state: State {
+    override public init(withState initialState: State, middleware: [Middleware], reducer: Reducer) {
+        self._state = Variable(initialState)
+        super.init(withState: initialState, middleware: middleware, reducer: reducer)
+    }
+    
+    override public var state: State {
         get {
             return _state.value
         }
         set {
             _state.value = newValue
         }
-    }
-    
-    override init(withState initialState: State, middleware: [Middleware], reducer: Reducer) {
-        self._state = Variable(initialState)
-        super.init(withState: initialState, middleware: middleware, reducer: reducer)
     }
     
     // override this to dispatch an action when an error occurs. By default,
@@ -63,5 +61,3 @@ public class Store<State,Action>: Store<State,Action>, ObservableType {
         return asObservable().subscribe(observer)
     }
 }
-
-#endif

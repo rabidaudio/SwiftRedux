@@ -1,22 +1,61 @@
 {
   "name": "SwiftRedux",
   "version": "0.1.0",
-  "summary": "A short description of SwiftRedux.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/SwiftRedux",
+  "summary": "A Swift implementation of Redux",
+  "description": "An implementation of [Redux](https://github.com/reactjs/redux) (the Flux-like state container)\nin Swift. Supports middleware, as well as combining reducers using `CombinedReducer(...).combine()`.\nAny object can be used for your State and Action objects. However, it is recommended to use structs\nand enums, respectively, for these objects. This allows you to not worry about accidentally mutating\nstate (Swift passes struct by value rather than reference) and makes passing action data easy (using\nenum tuples).\n\nBy default, it ships with a `BaseStore` object which can't be subscribed to by views. There are a few\noptions included in this library:\n\n- [Observable-Swift](https://github.com/slazyk/Observable-Swift) - Simple property-observing library\n- [RxSwift](https://github.com/ReactiveX/RxSwift) - ReactiveX Observable Pattern implementation. Similar\nto rx-redux, it allows stores to act as an observer for Actions and an Observable for State",
+  "homepage": "https://github.com/rabidaudio/SwiftRedux",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "Charles Julian Knight": "julian@fixdapp.com"
+    "Charles Julian Knight": "charles@rabidaudio.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/SwiftRedux.git",
+    "git": "https://github.com/rabidaudio/SwiftRedux.git",
     "tag": "0.1.0"
   },
+  "social_media_url": "https://twitter.com/charlesjuliank",
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "SwiftRedux/Classes/**/*"
+  "source_files": "SwiftRedux/Classes/*",
+  "subspecs": [
+    {
+      "name": "Observable-Swift",
+      "xcconfig": {
+        "OTHER_CFLAGS": "$(inherited) -DREDUX_INCLUDE_OBSERVABLESWIFT"
+      },
+      "source_files": "SwiftRedux/Classes/ObservableSwift/**/*",
+      "dependencies": {
+        "Observable-Swift": [
+          "~> 0.6.0"
+        ]
+      }
+    },
+    {
+      "name": "RxSwift",
+      "xcconfig": {
+        "OTHER_CFLAGS": "$(inherited) -DREDUX_INCLUDE_RX"
+      },
+      "source_files": "SwiftRedux/Classes/Rx/**/*",
+      "dependencies": {
+        "RxSwift": [
+          "~> 2.6"
+        ]
+      }
+    },
+    {
+      "name": "PromiseKit",
+      "xcconfig": {
+        "OTHER_CFLAGS": "$(inherited) -DREDUX_INCLUDE_PROMISEKIT"
+      },
+      "source_files": "SwiftRedux/Classes/PromiseKit/**/*",
+      "dependencies": {
+        "PromiseKit": [
+          "~> 3.3"
+        ]
+      }
+    }
+  ]
 }

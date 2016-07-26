@@ -11,16 +11,16 @@ import Foundation
 // Compose a group of Reducers down to a single Reducer.
 // Example:
 //   CombinedReducer(TODOReducer(), VisibilityFilterReducer()).create()
-class CombinedReducer<State,Action> {
-    typealias Reducer = ((prevState: State, action: Action) -> State)
+public class CombinedReducer<State,Action> {
+    public typealias Reducer = (prevState: State, action: Action) -> State
     
     private let reducers: [Reducer]
     
-    init(_ reducers: [Reducer]){
+    public init(_ reducers: [Reducer]){
         self.reducers = reducers
     }
     
-    convenience init(_ reducers: Reducer...){
+    public convenience init(_ reducers: Reducer...){
         self.init(reducers)
     }
     
@@ -32,7 +32,7 @@ class CombinedReducer<State,Action> {
         return newState
     }
     
-    func combine() -> Reducer {
+    public func combine() -> Reducer {
         return self.reduce
     }
 }
